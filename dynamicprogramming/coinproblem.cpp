@@ -12,8 +12,9 @@ int main() {
     dp[0] = 0;
     for (int i = 1; i <= n; i++) {
         for (auto c : coins) {
-            int t1 = i >= c ? dp[i-c] : 0;
-            dp[i] = min(dp[i], t1 + 1);
+            if (i-c >= 0 && dp[i] > dp[i-c]+1) {
+                dp[i] = dp[i-c]+1;
+            }
         }
     }
 
