@@ -7,6 +7,7 @@ int main() {
     string s;
     cin >> s;
     map<string, bool> mp;
+    set<pair<int, int>> result;
 
     for (int i = 1; i <= N; i++) {
         bool invalid = false;
