@@ -1,0 +1,117 @@
+// binary search là gì?
+// 0 1 2 3 4 5 6 
+// 0 0 0 0 1 1 1
+
+Với 1 dãy bất kì, nếu có 1 vị trí m, chia dãy thành 2 đoạn:  000..000, 11..1111
+// Bất biến vòng lặp: Loop Invariant
+1. Khởi tạo: Mệnh đề đúng (bất biến)
+2. Duy trì: với mỗi bước lặp, thì mệnh đề vẫn phải đúng với kết quả hiện tại
+3. Kết thúc: dựa vào tính bất biến, điều kiện dừng -> một kết quả chính xác
+
+// Tìm vị trí đầu mà lớn hơn target
+int l = 0;
+int r = length của dãy
+
+[1, 2, 3, 4, 5, 6] 
+ 0  l     r  1  1
+    m     m
+       l  r
+target: 
+
+Đổi: 
+l = 0
+r = len - 1
+while (l <= r) {
+    if (arr[m] > arr[m-1] && arr[m] < arr[m+1] + 1) return m
+    if (arr[m] < target) l = m + 1
+    else r = m - 1
+}
+
+return -1
+
+
+Khi (l < r) 
+ tính m = mid của dãy
+ với arr[m] <= target: l = m + 1
+ ngược lại: r = m
+return l
+
+
+Chứng minh: 
+Mệnh đề bất biến: 
++ Với mọi chỉ số i < l: P(i) = false
++ với mọi chỉ số i >= r: P(i) = true
++ Chỉ số cần tìm luôn nằm trong khoảng [l, r)
+
+
+
+Duy trì: 
+Luôn có l < r, ta có l <= m < r
+Duy tr
+
+Kết thúc: 
+Dừng khi khi l == r: [l, l): P(l) = true
+
+Pattern: 
+r = arr.size() -> luôn luôn có 1 trường hợp = true-> l = 0, r = size(), while (l < r)
+
+Mô hình: [l, r]: Có thể không có trường hợp trường nào đúng
+
+Mệnh đề: Chắc chắn trong khoảng [l, r] tổn tại [0, n - 1]
+arr = [5, 6, 7, 1, 2, 3] // arr[m] > arr[r] ~ arr[m] >= arr[l]
+          m  l     r
+Đưa về: tìm số nhỏ nhất ở dãy
+l = 0
+r = len - 1
+while (l < r) {
+    if (arr[m] == target) return ... 
+    if (arr[m] > arr[r]) l = m + 1
+    else r = m
+}
+
+return l
+
+Duy trì:
+Nếu arr[m] > arr[r]: Đoạn [l, m] tăng dần -> l = m + 1
+Nếu arr[m] <= arr[r]: Đoạn từ (m, r] tăng dần thuộc bên bé: điểm nhỏ nhất chỉ có thể nằm từ m -> r 
+
+Kết thúc: l == r -> [l, l]: P(l) = true
+
+// l < r: luôn luôn xuất hiện trong dãy 
+
+Kết thúc: 
+
+Dừng khi l < r: [l, r] -> 
+
+while (l <= r) : điều kiện dừng l > r || m == target
+
+A peak element is an element that is strictly greater than its neighbors.
+You are given a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks.
+
+You may imagine that nums[-1] = nums[n] = -∞. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.
+
+You must write an algorithm that runs in O(log n) time.
+
+Example 1:
+
+Input: nums = nums =  -1 [1,2,1,3,4,5,0] -1  [132456] [l, r), r <= len(-1), m thuộc [l, r), m == r - 1
+                                                   l        
+                              m
+
+Output: 5 || 2: Điểm cực đại: lớn hơn 2 thằng bên cạnh
+
+Liệu có tìm được chắc chắn vị trí cực đại trong dãy: l = 0, r = len - 1
+if (l == r) return 0
+while (l < r) {
+    int m = l + (r - l) / 2;
+    if (arr[m] < arr[m+1]) { // pass [5,4,3] [2, 4, 5]
+        l = m + 1                       m        m  l
+    } else if (arr[m] >= arr[m-1]) {
+        r = m
+    }
+}
+return l
+
+Kết thúc [l, r): l == r -> [l, l): P(l) = true
+
+*) Nhận diện: Tính đơn điệu
