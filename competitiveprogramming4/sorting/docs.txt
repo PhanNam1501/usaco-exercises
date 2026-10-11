@@ -21,3 +21,14 @@ find the largest number in merge2 (cnt = i+1) that smaller than merge1[0] res +=
 b. Sorting in Linear times
 Given an (unsorted) array of n elements, can we sort them in O(n) time
 
+b1. O(n+k) Counting sort
+If the array A contains n integers with small range [L...R], we can use the Counting Sort algorithm.
+A = {2a, 5, 2b, 2c, 3a, 3b}
+1. Prepaer a frequency array f with size k = R-L+1 and initialize f with zeroes
+e.g: L = 2, R = 5 and k = 4
+2. Update array
+3. Compute the prefix sums of each i: pre[i] = pre[i-1] + f[i]
+4. Build result(n): res[pre[arr[i]-L]-1] = arr[i]
+                    pre[arr[i]-L]--
+
+b2. O(d*(n+k)) Radix Sort
