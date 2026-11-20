@@ -1,38 +1,26 @@
-#include<bits/stdc++.h>
+
+#include <bits/stdc++.h>
 using namespace std;
 
 unordered_map<char, int> level;
 
-int calc(vector<char> &A) {
+int calc(vector<string> &A) {
     stack<int> st;
-    int n = A.size();
-    for (int i = 0; i < n; i++) {
-        if (int(A[i]-'0') >= 0 && int(A[i]-'0') <= 9) {
-            st.push(int(A[i]-'0'));
-        } else if (A[i] == '+') {
-            int x = st.top();
-            st.pop();
-            int y = st.top();
-            st.pop();
-            st.push(x+y);
-        } else if (A[i] == '-') {
-            int x = st.top();
-            st.pop();
-            int y = st.top();
-            st.pop();
-            st.push(y-x);
-        } else if (A[i] == '*') {
-            int x = st.top();
-            st.pop();
-            int y = st.top();
-            st.pop();
-            st.push(x*y);
+
+    for (string token : A) {
+        if (isdigit(token[0])) {
+            st.push(stoi(token));
         } else {
             int x = st.top();
             st.pop();
+
             int y = st.top();
             st.pop();
-            st.push(y/x);
+
+            if (token == "+") st.push(y + x);
+            else if (token == "-") st.push(y - x);
+            else if (token == "*") st.push(y * x);
+            else if (token == "/") st.push(y / x);
         }
     }
 
@@ -44,38 +32,57 @@ int main() {
     level['-'] = 1;
     level['*'] = 2;
     level['/'] = 2;
+
     string s;
     cin >> s;
+
     int n = s.size();
-    vector<char> postfix;
+
+    vector<string> postfix;
     stack<char> st;
+
+    // Infix -> Postfix
     for (int i = 0; i < n; i++) {
-        if (int(s[i]-'0') <= 9 && int(s[i]-'0') >= 0) {
-            postfix.push_back(s[i]);
-        } else if (s[i] == ')') {
+        if (isdigit(s[i])) {
+            string num;
+
+            while (i < n && isdigit(s[i])) {
+                num += s[i];
+                i++;
+            }
+
+            postfix.push_back(num);
+            i--;
+        }
+        else if (s[i] == '(') {
+            st.push(s[i]);
+        }
+        else if (s[i] == ')') {
             while (!st.empty() && st.top() != '(') {
-                postfix.push_back(st.top());
+                postfix.push_back(string(1, st.top()));
                 st.pop();
             }
-            st.pop();
-        } else {
-            while (s[i] != '(' && !st.empty() && level[s[i]] <= level[st.top()]) {
-                postfix.push_back(st.top());
+
+            if (!st.empty()) st.pop();
+        }
+        else {
+            while (!st.empty() && st.top() != '(' &&
+                   level[s[i]] <= level[st.top()]) {
+                postfix.push_back(string(1, st.top()));
                 st.pop();
             }
+
             st.push(s[i]);
         }
     }
 
     while (!st.empty()) {
-        postfix.push_back(st.top());
+        postfix.push_back(string(1, st.top()));
         st.pop();
     }
 
-    // for (int i = 0; i < postfix.size(); i++) {
-    //     cout << postfix[i];
-    // }
+    // Evaluate Postfix
+    cout << calc(postfix) << '\n';
 
-    cout << calc(postfix);
+    return 0;
 }
-
